@@ -1239,7 +1239,7 @@ const Report = () => {
                     {openModalDetail && (
                       <div>
                         <label className="mb-3 mt-5 block text-black dark:text-white font-bold">
-                          Quan hệ với người nhận
+                          Xác nhận thông tin số tài khoản
                         </label>
                         <div className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition min-h-[48px] focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                           {winnerInfo.winnerRelationship}
@@ -1315,6 +1315,17 @@ const Report = () => {
                               không?
                             </p>
                             <p>{record.question3 || 'Chưa trả lời'}</p>
+
+                            <p className="font-bold">
+                              4. Tình trạng POSM
+                            </p>
+                            <p>{record.question4 || 'Chưa trả lời'}</p>
+
+                            <p className="font-bold">
+                              5. % Che phủ
+                            </p>
+                            <p>{record.question5 || 'Chưa trả lời'}</p>
+
 
                             <p className="font-bold">Ghi chú</p>
                             <p>{record.description || ''}</p>

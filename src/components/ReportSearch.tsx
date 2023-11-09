@@ -8,6 +8,7 @@ import { StoreSearchParams } from '../models/StoreModel';
 import { apiClient, authService, storeService } from '../services';
 import { appStore } from '../stores';
 import FormInput from './FormInput';
+import {exportToExcel} from './ExportExcel';
 
 type ScreenProps = {
   setData: (result: StoreModel[]) => void;
@@ -87,7 +88,7 @@ const StoreSearch = ({ setData }: ScreenProps) => {
       setListDistrics(result.data);
     }
   };
-
+  
   const getAllUsers = async () => {
     appStore.setLoading(true);
     const result = await authService.all();
@@ -140,7 +141,106 @@ const StoreSearch = ({ setData }: ScreenProps) => {
       });
     }
   };
+  //Export Excel
+const handleExport = async () => {
+  appStore.setLoading(true);
 
+  try {
+    let result = await storeService.filterReport(searchParams);
+
+    appStore.setLoading(false);
+
+    if (!result) {
+      appStore.setMessage({
+        type: 'error',
+        content: 'Có lỗi xảy ra, vui lòng thử lại sau',
+        timestamp: new Date().getMilliseconds(),
+      });
+      return;
+    }
+
+    if (result.isSuccess) {
+      const jsonData = result.data;
+
+      if (jsonData && jsonData.length > 0) {
+        const headerMapping = {
+          id: "ID cửa hàng",
+          storeCode: 'Mã cửa hàng',
+          storeName: 'Tên cửa hàng',
+          address: 'Địa chỉ',
+          provinceName: 'Thành phố',
+          districName: 'Quận/Huyện',
+          userId: 'Mã nhân viên',
+          'userFirstName.userLastName': 'Tên nhân viên',
+          updated_at: "Ngày audit",
+          'lat': 'Latitude',
+          'long': 'Longitude',
+          'checkin': 'Checkin Time',
+          'checkout': 'Checkout Time',
+        };
+
+        const updatedData = [];
+
+        for (const item of jsonData) {
+          let lat = null;
+          let long = null;
+          let checkin = null;
+          let checkout = null;
+
+          const response = await storeService.getAllImagesByStoreId(item.id);
+
+          if (response && response.data) {
+            const images = response.data;
+
+            for (const image of images) {
+              if (image.typeCode === 'check_out') {
+                lat = image.lat;
+                long = image.long;
+                checkout = image.updated_at;
+              }
+              if (image.typeCode === 'check_in') {
+                checkin = image.updated_at;
+              }
+            }
+          }
+
+          updatedData.push({
+            ...item,
+            'userFirstName.userLastName': item.userFirstName + ' ' + item.userLastName,
+            'lat': lat,
+            'long': long,
+            'checkin': checkin,
+            'checkout': checkout,
+          });
+        }
+
+        // Assuming exportToExcel creates the Excel file - You might want to use a specific library for this purpose
+        exportToExcel('Report', updatedData, headerMapping);
+      } else {
+        appStore.setMessage({
+          type: 'error',
+          content: 'Không có dữ liệu',
+          timestamp: new Date().getMilliseconds(),
+        });
+        return;
+      }
+    } else {
+      appStore.setMessage({
+        type: 'error',
+        content: result.message,
+        timestamp: new Date().getMilliseconds(),
+      });
+    }
+  } catch (error) {
+    // Handle errors here
+    console.error(error);
+    appStore.setMessage({
+      type: 'error',
+      content: 'Error occurred while exporting data',
+      timestamp: new Date().getMilliseconds(),
+    });
+  }
+};
   const onChangeDate = (values: RangeValue<dayjs.Dayjs>) => {
     if (values && values.length === 2) {
       setSearchParams({
@@ -357,6 +457,12 @@ const StoreSearch = ({ setData }: ScreenProps) => {
           onClick={handleSearch}
         >
           Tìm kiếm
+        </button>
+        <button
+          className="bg-gray mx-10 py-3 px-5 text-black rounded-md hover:bg-opacity-90"
+          onClick={handleExport}
+        >
+          Export Excel
         </button>
       </div>
     </div>
