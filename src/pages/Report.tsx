@@ -685,12 +685,12 @@ const Report = () => {
                         </tr>
 
                         <tr>
-                          <td className="text-black font-bold border p-2">
+                       {/*    <td className="text-black font-bold border p-2">
                             Chủ cửa hàng:
                           </td>
                           <td className="border p-2">
                             {createParams.contactName}
-                          </td>
+                          </td> */}
 
                           <td className="text-black font-bold border p-2">
                             Trạng thái cửa hàng:
@@ -1382,12 +1382,12 @@ const Report = () => {
               render: (_, record) =>
                 (record.storeCode || '') + ' ' + record.storeName,
             },
-            {
+          /*   {
               key: 'id',
               title: 'Chủ cửa hàng',
               dataIndex: 'contactName',
               width: 200,
-            },
+            }, */
             // {
             //   title: 'Điện thoại',
             //   dataIndex: 'phoneNumber',

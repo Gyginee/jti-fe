@@ -206,7 +206,7 @@ const StoreSearch = ({ setData }: ScreenProps) => {
           />
         </Col>
 
-        <Col xs={24} md={12}>
+    {/*     <Col xs={24} md={12}>
           <FormInput
             label="Chủ cửa hàng"
             value={searchParams.contactName}
@@ -214,7 +214,7 @@ const StoreSearch = ({ setData }: ScreenProps) => {
               setSearchParams({ ...searchParams, contactName: e.target.value })
             }
           />
-        </Col>
+        </Col> */}
 
         <Col xs={24} md={12}>
           <label className="my-3 block text-black dark:text-white font-bold">

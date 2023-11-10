@@ -354,7 +354,7 @@ const handleExport = async () => {
           />
         </Col>
 
-        <Col xs={24} md={12}>
+       {/*  <Col xs={24} md={12}>
           <FormInput
             label="Chủ cửa hàng"
             value={searchParams.contactName}
@@ -362,7 +362,7 @@ const handleExport = async () => {
               setSearchParams({ ...searchParams, contactName: e.target.value })
             }
           />
-        </Col>
+        </Col> */}
 
         <Col xs={24} md={12}>
           <label className="my-3 block text-black dark:text-white font-bold">
@@ -451,7 +451,7 @@ const handleExport = async () => {
         </Col>
       </Row>
 
-      <div className="text-center mt-3">
+      <div className="text-center mt-5">
         <button
           className="bg-primary px-5 py-3 text-white rounded-md hover:bg-opacity-90"
           onClick={handleSearch}

@@ -691,12 +691,12 @@ const Store = () => {
               width: 200,
               render: (_, record) => record.storeName,
             },
-            {
+          /*   {
               key: 'id',
               title: 'Chủ cửa hàng',
               dataIndex: 'contactName',
               width: 200,
-            },
+            }, */
             {
               key: 'id',
               title: 'Điện thoại',
